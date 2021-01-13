@@ -1,6 +1,8 @@
 package com.udacity.jdnd.course3.critter.services;
 
+import com.udacity.jdnd.course3.critter.entites.Customer;
 import com.udacity.jdnd.course3.critter.entites.Pet;
+import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.repositories.PetDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,13 +29,20 @@ public class PetServices {
         return petDao.findAllPets();
     }
 
-    public Pet findPetById(Long id){
+    public PetDTO findPetById(Long id){
         logger.info("**START** findPetById={}", id);
         return petDao.findPetById(id);
     }
 
     public Long save(Pet pet){
         logger.info("**START** save() ={}", pet);
-        return petDao.savePet(pet);
+        Long ownerId = null;
+        if(pet.getOwner() != null) {
+            ownerId = pet.getOwner().getId();
+            pet.setOwner(null);
+            System.out.println("inside");
+        }
+        logger.info("**END** save()to repo ={}", pet);
+        return petDao.savePet(pet, ownerId);
     }
 }

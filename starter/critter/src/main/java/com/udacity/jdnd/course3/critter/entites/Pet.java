@@ -8,8 +8,10 @@ import java.time.LocalDate;
 @Entity
 public class Pet {
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Enumerated(EnumType.STRING)
     private PetType type;
     private String name;
 
@@ -23,15 +25,15 @@ public class Pet {
     @JoinColumn(name = "appointment")
     private Schedule appointment;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public PetType getType() {
+    public PetType  getType() {
         return type;
     }
 
@@ -77,4 +79,16 @@ public class Pet {
         this.appointment = appointment;
     }
 
+    @Override
+    public String toString() {
+        return "Pet{" +
+                "id=" + id +
+                ", type=" + type +
+                ", name='" + name + '\'' +
+                ", owner=" + owner +
+                ", birthDate=" + birthDate +
+                ", notes='" + notes + '\'' +
+                ", appointment=" + appointment +
+                '}';
+    }
 }
