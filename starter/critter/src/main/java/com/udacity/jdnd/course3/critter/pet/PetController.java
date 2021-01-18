@@ -37,14 +37,16 @@ public class PetController {
 
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
+//        Pet pet =
         return petServices.findPetById(petId);
 //        return convertPetsToPetDTO(pet);
     }
 
     @GetMapping
     public List<PetDTO> getPets(){
-        List<Pet> petList = petServices.findAllPets();
-        return convertPetToPetDTOList(petList);
+//        List<Pet> petList =
+          return petServices.findAllPets();
+//        return convertPetToPetDTOList(petList);
     }
 
     @GetMapping("/owner/{ownerId}")

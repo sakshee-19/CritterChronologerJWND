@@ -1,8 +1,13 @@
 package com.udacity.jdnd.course3.critter.entites;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
+//@NamedQuery(
+//        name = "Customer.hasPet",
+//        query = "select * from customer c where :petId in (c.petIds)"
+//)
 @Entity
 public class Customer extends User{
 
@@ -34,5 +39,20 @@ public class Customer extends User{
 
     public void setPetIds(List<Pet> petIds) {
         this.petIds = petIds;
+    }
+
+    public void addPet(Pet pet) {
+        if(this.petIds == null)
+            this.petIds = new ArrayList<>();
+        this.petIds.add(pet);
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "phoneNumber='" + phoneNumber + '\'' +
+                ", notes='" + notes + '\'' +
+                ", petIds=" + petIds +
+                '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,5 +52,22 @@ public class CustomerDTO {
 
     public void setPetIds(List<Long> petIds) {
         this.petIds = petIds;
+    }
+
+    public void addPetIds(Long id) {
+        if (this.petIds == null)
+            this.petIds = new ArrayList<>();
+        this.petIds.add(id);
+    }
+
+    @Override
+    public String toString() {
+        return "CustomerDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", notes='" + notes + '\'' +
+                ", petIds=" + petIds +
+                '}';
     }
 }

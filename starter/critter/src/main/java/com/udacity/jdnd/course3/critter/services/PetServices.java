@@ -24,7 +24,7 @@ public class PetServices {
         return petDao.findAllPetOwnerHas(ownerId);
     }
 
-    public List<Pet> findAllPets(){
+    public List<PetDTO> findAllPets(){
         logger.info("**START** findALLPets");
         return petDao.findAllPets();
     }
