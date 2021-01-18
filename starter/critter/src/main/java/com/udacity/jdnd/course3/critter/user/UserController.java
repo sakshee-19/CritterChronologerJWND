@@ -30,8 +30,7 @@ public class UserController {
     EmployeeService employeeService;
 
     @PostMapping("/customer")
-    public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO)
-    {
+    public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) {
         Customer customer = customerService.createCustomer(convertToEntityCustomer(customerDTO));
         return convertToDTOCustomer(customer);
     }
@@ -72,6 +71,8 @@ public class UserController {
     private Customer convertToEntityCustomer(CustomerDTO customerDTO) {
         Customer customer = new Customer();
         BeanUtils.copyProperties(customerDTO, customer);
+        if (customerDTO.getPetIds() == null)
+            return customer;
         for (Long petIds : customerDTO.getPetIds()){
             Pet pet = new Pet();
             pet.setId(petIds);
@@ -80,12 +81,13 @@ public class UserController {
         return customer;
     }
 
-
     private CustomerDTO convertToDTOCustomer(Customer customer) {
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
-        for (Pet pet : customer.getPetIds()){
-            customerDTO.addPetIds(pet.getId());
+        if (customer.getPetIds() != null){
+            for (Pet pet : customer.getPetIds()){
+                customerDTO.addPetIds(pet.getId());
+            }
         }
         return customerDTO;
     }

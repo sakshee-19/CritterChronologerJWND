@@ -4,6 +4,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//@NamedQuery(
+//        name = "Customer.hasPet",
+//        query = "select * from customer c where :petId in (c.petIds)"
+//)
 @Entity
 public class Customer extends User{
 

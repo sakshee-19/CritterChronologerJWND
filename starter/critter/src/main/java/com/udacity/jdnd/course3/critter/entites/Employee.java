@@ -6,10 +6,10 @@ import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.util.Set;
 
-@NamedQuery(
-        name = "Employee.updateSchedule",
-        query = ""
-)
+//@NamedQuery(
+//        name = "Employee.updateSchedule",
+//        query = ""
+//)
 @Entity
 public class Employee extends User{
 

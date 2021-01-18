@@ -1,19 +1,19 @@
 package com.udacity.jdnd.course3.critter.repositories;
 
+import com.udacity.jdnd.course3.critter.entites.Customer;
 import com.udacity.jdnd.course3.critter.entites.Pet;
 import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -30,6 +30,9 @@ public class PetDaoImpl implements PetDao {
 
     private static final String INSERT_PET = "insert into pet ( type, owner, name, birth_date, notes) values ( :type, :owner, :name, :birthDate, :notes)";
 
+    private static final BeanPropertyRowMapper<Pet> petMapper = new BeanPropertyRowMapper<>(Pet.class);
+    private static final BeanPropertyRowMapper<Customer> customerMapper = new BeanPropertyRowMapper<>(Customer.class);
+
     @Override
     public List<Pet> findAllPetOwnerHas(Long ownerId) {
         return jdbcTemplate.query(PETS_BY_OWNER_ID,
@@ -38,9 +41,21 @@ public class PetDaoImpl implements PetDao {
     }
 
     @Override
-    public List<Pet> findAllPets() {
+    public List<PetDTO> findAllPets() {
         return jdbcTemplate.query(PETS_ALL,
-                new BeanPropertyRowMapper<>(Pet.class));
+//                new BeanPropertyRowMapper<>(PetDTO.class)
+                resultSet -> {
+                    List<PetDTO> petDTOs = new ArrayList<>();
+                    int row = 0;
+                    while (resultSet.next()) {
+                        PetDTO petDTO = new BeanPropertyRowMapper<>(PetDTO.class).mapRow(resultSet, row);
+                        petDTO.setOwnerId(resultSet.getLong("owner"));
+                        petDTOs.add(petDTO);
+                        row++;
+                    }
+                    return petDTOs;
+                }
+        );
     }
 
     @Override
@@ -48,8 +63,15 @@ public class PetDaoImpl implements PetDao {
         try {
             return jdbcTemplate.queryForObject(PETS_BY_ID,
                     new MapSqlParameterSource().addValue("id", id),
-                    new BeanPropertyRowMapper<>(PetDTO.class));
-        } catch (EmptyResultDataAccessException e){
+//                    new BeanPropertyRowMapper<>(PetDTO.class));
+                    (resultSet, i) -> {
+                        PetDTO pet = new BeanPropertyRowMapper<>(PetDTO.class).mapRow(resultSet, i);
+                        System.out.println(pet);
+                        pet.setOwnerId(resultSet.getLong("owner"));
+                        return pet;
+                    });
+
+        } catch (EmptyResultDataAccessException e) {
             System.out.println(e.getLocalizedMessage());
             return null;
         }
@@ -62,7 +84,7 @@ public class PetDaoImpl implements PetDao {
                 INSERT_PET,
                 new MapSqlParameterSource()
                         .addValue("type", pet.getType().name())
-                        .addValue("name",pet.getName())
+                        .addValue("name", pet.getName())
                         .addValue("owner", ownerId)
                         .addValue("birthDate", pet.getBirthDate())
                         .addValue("notes", pet.getNotes()),
