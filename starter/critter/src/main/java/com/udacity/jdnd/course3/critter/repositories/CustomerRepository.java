@@ -6,11 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NamedQuery;
+import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    @Query("select c from Customer c where :petId in (c.petIds) ")
+    @Query("SELECT c FROM Customer c where c.id = (SELECT DISTINCT p.owner.id FROM Pet p where p.id=:petId)")
     Customer getByPetId(Long petId);
 
 

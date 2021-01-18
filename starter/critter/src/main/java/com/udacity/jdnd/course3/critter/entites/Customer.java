@@ -46,4 +46,13 @@ public class Customer extends User{
             this.petIds = new ArrayList<>();
         this.petIds.add(pet);
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "phoneNumber='" + phoneNumber + '\'' +
+                ", notes='" + notes + '\'' +
+                ", petIds=" + petIds +
+                '}';
+    }
 }

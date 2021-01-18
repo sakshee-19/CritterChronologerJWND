@@ -71,7 +71,7 @@ public class UserController {
     private Customer convertToEntityCustomer(CustomerDTO customerDTO) {
         Customer customer = new Customer();
         BeanUtils.copyProperties(customerDTO, customer);
-        if (customerDTO.getPetIds() == null)
+        if (customerDTO.getPetIds() == null || customerDTO.getPetIds().isEmpty())
             return customer;
         for (Long petIds : customerDTO.getPetIds()){
             Pet pet = new Pet();
@@ -83,9 +83,10 @@ public class UserController {
 
     private CustomerDTO convertToDTOCustomer(Customer customer) {
         CustomerDTO customerDTO = new CustomerDTO();
-        BeanUtils.copyProperties(customer, customerDTO);
-        if (customer.getPetIds() != null){
-            for (Pet pet : customer.getPetIds()){
+        List<Pet> pets = customer.getPetIds();
+        BeanUtils.copyProperties(customer, customerDTO, "petIds");
+        if (pets != null && !pets.isEmpty()){
+                for(Pet pet : pets){
                 customerDTO.addPetIds(pet.getId());
             }
         }

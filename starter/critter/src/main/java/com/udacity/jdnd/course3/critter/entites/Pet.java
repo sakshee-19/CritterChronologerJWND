@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.udacity.jdnd.course3.critter.pet.PetType;
 
 import javax.persistence.*;
@@ -15,12 +16,16 @@ public class Pet {
     private PetType type;
     private String name;
 
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner")
     private Customer owner;
     private LocalDate birthDate;
     private String notes;
 
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointment")
     private Schedule appointment;
@@ -79,16 +84,16 @@ public class Pet {
         this.appointment = appointment;
     }
 
-    @Override
-    public String toString() {
-        return "Pet{" +
-                "id=" + id +
-                ", type=" + type +
-                ", name='" + name + '\'' +
-                ", owner=" + owner +
-                ", birthDate=" + birthDate +
-                ", notes='" + notes + '\'' +
-                ", appointment=" + appointment +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Pet{" +
+//                "id=" + id +
+//                ", type=" + type +
+//                ", name='" + name + '\'' +
+//                ", owner=" + owner +
+//                ", birthDate=" + birthDate +
+//                ", notes='" + notes + '\'' +
+//                ", appointment=" + appointment +
+//                '}';
+//    }
 }

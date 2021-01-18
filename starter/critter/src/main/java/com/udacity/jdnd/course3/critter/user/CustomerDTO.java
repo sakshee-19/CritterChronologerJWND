@@ -59,4 +59,15 @@ public class CustomerDTO {
             this.petIds = new ArrayList<>();
         this.petIds.add(id);
     }
+
+    @Override
+    public String toString() {
+        return "CustomerDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", notes='" + notes + '\'' +
+                ", petIds=" + petIds +
+                '}';
+    }
 }

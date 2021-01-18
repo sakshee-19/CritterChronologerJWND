@@ -26,7 +26,9 @@ public class CustomerService {
     }
 
     public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+        List<Customer> customers = customerRepository.findAll();
+        System.out.println(customers);
+        return customers;
     }
 
 
@@ -39,9 +41,11 @@ public class CustomerService {
     }
 
     public Customer getOwnerByPetId(Long petId) {
-        Optional<Customer> customer = customerRepository.findById(petId);
-        if (customer.isPresent()) return customer.get();
-        return null;
+        logger.info("**START getOwnerByPetId petId={}", petId);
+        Customer customer = customerRepository.getByPetId(petId);
+//        if (customer.isPresent()) return customer.get();
+        logger.info("**END getOwnerByPetId petId={}", petId);
+        return customer;
     }
 
     public Customer addNewPetToCustomer(List<Pet> pets, Long customerId){
