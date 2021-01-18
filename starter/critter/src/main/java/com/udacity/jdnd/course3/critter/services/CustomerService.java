@@ -38,6 +38,12 @@ public class CustomerService {
         return null;
     }
 
+    public Customer getOwnerByPetId(Long petId) {
+        Optional<Customer> customer = customerRepository.findById(petId);
+        if (customer.isPresent()) return customer.get();
+        return null;
+    }
+
     public Customer addNewPetToCustomer(List<Pet> pets, Long customerId){
         logger.info("**START** addNewPetToCustomer pets={}, customerId={}", pets,customerId);
         Customer customer = getCustomerById(customerId);
