@@ -26,16 +26,4 @@ public class CritterController {
     public String test(){
         return "Critter Starter installed successfully";
     }
-
-    @PostMapping("/create")
-    public ResponseEntity createCustomer(@RequestBody Customer body){
-        Customer res = customerService.createCustomer(body);
-        return new ResponseEntity(res, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/get")
-    public ResponseEntity getAllCustomer(){
-        List<Customer> res = customerService.getAllCustomers();
-        return new ResponseEntity(res, HttpStatus.CREATED);
-    }
 }
