@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PetDao {
 
-    List<Pet> findAllPetOwnerHas(Long ownerId);
+    List<PetDTO> findAllPetOwnerHas(Long ownerId);
     List<PetDTO> findAllPets();
     PetDTO findPetById(Long id);
     Long savePet(Pet pet, Long ownerId);

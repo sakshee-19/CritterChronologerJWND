@@ -12,7 +12,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +33,23 @@ public class PetDaoImpl implements PetDao {
     private static final BeanPropertyRowMapper<Customer> customerMapper = new BeanPropertyRowMapper<>(Customer.class);
 
     @Override
-    public List<Pet> findAllPetOwnerHas(Long ownerId) {
+    public List<PetDTO> findAllPetOwnerHas(Long ownerId) {
         return jdbcTemplate.query(PETS_BY_OWNER_ID,
                 new MapSqlParameterSource().addValue("id", ownerId),
-                new BeanPropertyRowMapper<>(Pet.class));
+//                new BeanPropertyRowMapper<>(Pet.class)
+//                resultSet ->
+                resultSet -> {
+                    List<PetDTO> petDTOs = new ArrayList<>();
+                    int row = 0;
+                    while (resultSet.next()) {
+                        PetDTO petDTO = new BeanPropertyRowMapper<>(PetDTO.class).mapRow(resultSet, row);
+                        petDTO.setOwnerId(resultSet.getLong("owner"));
+                        petDTOs.add(petDTO);
+                        row++;
+                    }
+                    return petDTOs;
+                }
+        );
     }
 
     @Override

@@ -7,6 +7,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+@NamedQuery(
+        name = "Schedule.findScheduleForCustomer",
+        query = "Select s From Schedule s JOIN Pet p on (s.id=p.appointment) where p.owner.id=:customerId"
+)
 @Entity
 public class Schedule {
     @Id

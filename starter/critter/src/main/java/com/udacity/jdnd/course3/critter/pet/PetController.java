@@ -51,8 +51,9 @@ public class PetController {
 
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
-        List<Pet> petList = petServices.petsByOwnerId(ownerId);
-        return convertPetToPetDTOList(petList);
+//        List<Pet> petList =
+                return petServices.petsByOwnerId(ownerId);
+//        return convertPetToPetDTOList(petList);
     }
 
     private PetDTO convertPetsToPetDTO(Pet pet){
