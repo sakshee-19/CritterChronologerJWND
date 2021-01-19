@@ -58,6 +58,7 @@ public class UserController {
     @GetMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
         Employee employee = employeeService.findEmployeeById(employeeId);
+        System.out.println(employee);
         return convertToDTOEmployee(employee);
     }
 
@@ -113,6 +114,8 @@ public class UserController {
     }
     private EmployeeDTO convertToDTOEmployee(Employee employee) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
+        if (employee == null)
+            return null;
         BeanUtils.copyProperties(employee, employeeDTO);
         return employeeDTO;
     }

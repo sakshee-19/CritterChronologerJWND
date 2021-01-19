@@ -19,7 +19,7 @@ public class PetServices {
 
     private static final Logger logger = LoggerFactory.getLogger(PetServices.class);
 
-    public List<Pet> petsByOwnerId(Long ownerId) {
+    public List<PetDTO> petsByOwnerId(Long ownerId) {
         logger.info("**START** petsByOwnerId ownerId={}", ownerId);
         return petDao.findAllPetOwnerHas(ownerId);
     }
