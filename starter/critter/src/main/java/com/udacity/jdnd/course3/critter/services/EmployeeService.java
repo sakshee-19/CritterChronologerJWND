@@ -51,13 +51,13 @@ public class EmployeeService {
 
     public void setAvailability(Set<DayOfWeek> avail, Long empId){
         logger.info("**START** setAvailability avail={}, empId={}", avail, empId);
-//        Employee emp = findEmployeeById(empId);
-//        if(emp != null) {
-//            emp.setDaysAvailable(avail);
-//            employeeRepository.merge(emp);
-//        } else
-//            logger.info("**END** emp with id={} does not exists", empId);
-        employeeRepository.setUpdateAvailability(avail, empId);
+        Employee emp = findEmployeeById(empId);
+        if(emp != null) {
+            emp.setDaysAvailable(avail);
+            employeeRepository.merge(emp);
+        } else
+            logger.info("**END** emp with id={} does not exists", empId);
+//        employeeRepository.setUpdateAvailability(avail, empId);
     }
 
     public List<Employee> findEmployeeForService(EmployeeRequestDTO employeeDTO) {
