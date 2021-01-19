@@ -39,6 +39,7 @@ public class EmployeeRepository {
     }
 
     private static final String UPDATE_AVAILABILITY = "update Employee e SET e.daysAvailable=:daysAvailable where e.id=:id";
+//    private static final String UPDATE_AVAILABILITY_EMP = "update employee_days_availability eda SET eda.daysAvailable=:daysAvailable where e.id=:id";
 
     public void setUpdateAvailability(Set<DayOfWeek> daysAvailable, Long empId) {
         entityManager.createQuery(UPDATE_AVAILABILITY)
