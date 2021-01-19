@@ -27,7 +27,7 @@ public class Employee extends User{
     @Column(name = "days")
     private Set<DayOfWeek> daysAvailable;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "schedule")
     private Schedule schedule;
 
@@ -53,5 +53,14 @@ public class Employee extends User{
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "skills=" + skills +
+                ", daysAvailable=" + daysAvailable +
+                ", schedule=" + schedule +
+                '}';
     }
 }

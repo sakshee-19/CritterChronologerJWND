@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.user;
 
 import com.udacity.jdnd.course3.critter.entites.Customer;
+import com.udacity.jdnd.course3.critter.entites.Employee;
 import com.udacity.jdnd.course3.critter.entites.Pet;
 import com.udacity.jdnd.course3.critter.services.CustomerService;
 import com.udacity.jdnd.course3.critter.services.EmployeeService;
@@ -50,22 +51,25 @@ public class UserController {
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+        Employee employee = employeeService.saveEmployee(convertToEntity(employeeDTO));
+        return convertToDTOEmployee(employee);
     }
 
     @PostMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        Employee employee = employeeService.findEmployeeById(employeeId);
+        return convertToDTOEmployee(employee);
     }
 
     @PutMapping("/employee/{employeeId}")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        employeeService.setAvailability(daysAvailable, employeeId);
     }
 
     @GetMapping("/employee/availability")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+        List<Employee> employee = employeeService.findEmployeeForService(employeeDTO);
+        return convertToDTOEmployee(employee);
     }
 
     private Customer convertToEntityCustomer(CustomerDTO customerDTO) {
@@ -101,5 +105,27 @@ public class UserController {
         }
         return customerDTOList;
     }
+
+    private Employee convertToEntity(EmployeeDTO employeeDTO){
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+        return employee;
+    }
+    private EmployeeDTO convertToDTOEmployee(Employee employee) {
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        BeanUtils.copyProperties(employee, employeeDTO);
+        return employeeDTO;
+    }
+
+
+    private List<EmployeeDTO> convertToDTOEmployee(List<Employee> employeeList) {
+        List<EmployeeDTO> employeeDTOS = new ArrayList<>();
+        for (Employee employee: employeeList) {
+            EmployeeDTO employeeDTO = convertToDTOEmployee(employee);
+            employeeDTOS.add(employeeDTO);
+        }
+        return employeeDTOS;
+    }
+
 
 }
