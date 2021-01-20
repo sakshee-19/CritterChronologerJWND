@@ -23,7 +23,7 @@ public class ScheduleController {
 
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
-        Schedule schedule = scheduleService.saveSchedule(convertToEntity(scheduleDTO));
+        Schedule schedule = scheduleService.saveSchedule(scheduleDTO);
         return convertToDto(schedule);
     }
 
@@ -69,10 +69,15 @@ public class ScheduleController {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
         BeanUtils.copyProperties(schedule,scheduleDTO, "petIds", "employeeIds");
         List<Long> petIds = new ArrayList<>();
-        for(Pet pet: schedule.getPetIds()) petIds.add(pet.getId());
+        if(schedule.getPetIds() != null)
+        {
+            for(Pet pet: schedule.getPetIds()) petIds.add(pet.getId());
+        }
 
         List<Long> employeeIds = new ArrayList<>();
-        for(Employee employee: schedule.getEmployeeIds()) employeeIds.add(employee.getId());
+        if(null != schedule.getEmployeeIds()){
+            for(Employee employee: schedule.getEmployeeIds()) employeeIds.add(employee.getId());
+        }
 
         scheduleDTO.setEmployeeIds(employeeIds);
         scheduleDTO.setPetIds(petIds);

@@ -45,4 +45,8 @@ public class PetServices {
         logger.info("**END** save()to repo ={}", pet);
         return petDao.savePet(pet, ownerId);
     }
+
+    public void updatePetAppointment(long petId, long scheduleId){
+        petDao.setPetAppointmentUpdate(petId, scheduleId);
+    }
 }

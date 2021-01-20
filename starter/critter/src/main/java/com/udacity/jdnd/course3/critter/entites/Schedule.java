@@ -56,4 +56,14 @@ public class Schedule {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "id=" + id +
+                ", employeeIds=" + employeeIds +
+                ", petIds=" + petIds +
+                ", date=" + date +
+                '}';
+    }
 }

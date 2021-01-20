@@ -11,4 +11,6 @@ public interface PetDao {
     List<PetDTO> findAllPets();
     PetDTO findPetById(Long id);
     Long savePet(Pet pet, Long ownerId);
+
+    void setPetAppointmentUpdate(long petId, long appointmentId);
 }

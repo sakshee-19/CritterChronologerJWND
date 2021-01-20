@@ -29,6 +29,8 @@ public class PetDaoImpl implements PetDao {
 
     private static final String INSERT_PET = "insert into pet ( type, owner, name, birth_date, notes) values ( :type, :owner, :name, :birthDate, :notes)";
 
+    private static final String PET_APPOINTMENT_UPDATE = "update pet set appointment=:appointmentId where id=:id";
+
     private static final BeanPropertyRowMapper<Pet> petMapper = new BeanPropertyRowMapper<>(Pet.class);
     private static final BeanPropertyRowMapper<Customer> customerMapper = new BeanPropertyRowMapper<>(Customer.class);
 
@@ -75,7 +77,7 @@ public class PetDaoImpl implements PetDao {
         try {
             return jdbcTemplate.queryForObject(PETS_BY_ID,
                     new MapSqlParameterSource().addValue("id", id),
-//                    new BeanPropertyRowMapper<>(PetDTO.class));
+//                    new BeanPropertyRowMapper<>(Pet.class));
                     (resultSet, i) -> {
                         PetDTO pet = new BeanPropertyRowMapper<>(PetDTO.class).mapRow(resultSet, i);
                         System.out.println(pet);
@@ -103,6 +105,16 @@ public class PetDaoImpl implements PetDao {
                 key
         );
         return key.getKey().longValue();
+    }
+
+    @Override
+    public void setPetAppointmentUpdate(long petId, long appointmentId){
+        jdbcTemplate.update(
+                PET_APPOINTMENT_UPDATE,
+                new MapSqlParameterSource()
+                .addValue("id", petId)
+                .addValue("appointmentId", appointmentId)
+        );
     }
 
 //    @Override
