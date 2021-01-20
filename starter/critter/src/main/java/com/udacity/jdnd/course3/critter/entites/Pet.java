@@ -24,12 +24,6 @@ public class Pet {
     private LocalDate birthDate;
     private String notes;
 
-
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "appointment")
-    private Schedule appointment;
-
     public long getId() {
         return id;
     }
@@ -75,15 +69,6 @@ public class Pet {
     public void setNotes(String notes) {
         this.notes = notes;
     }
-
-    public Schedule getAppointment() {
-        return appointment;
-    }
-
-    public void setAppointment(Schedule appointment) {
-        this.appointment = appointment;
-    }
-
 //    @Override
 //    public String toString() {
 //        return "Pet{" +
