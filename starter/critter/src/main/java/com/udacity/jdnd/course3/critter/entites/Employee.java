@@ -8,7 +8,7 @@ import java.util.Set;
 
 //@NamedQuery(
 //        name = "Employee.updateSchedule",
-//        query = ""
+//        query = "Select * FROM employee e where e.skills in :skills AND :day in e.daysAvailable"
 //)
 @Entity
 public class Employee extends User{

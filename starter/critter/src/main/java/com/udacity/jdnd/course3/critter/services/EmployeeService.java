@@ -4,6 +4,7 @@ import com.udacity.jdnd.course3.critter.entites.Employee;
 import com.udacity.jdnd.course3.critter.exceptions.NotFoundException;
 import com.udacity.jdnd.course3.critter.repositories.EmployeeRepository;
 import com.udacity.jdnd.course3.critter.user.EmployeeRequestDTO;
+import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -63,7 +66,11 @@ public class EmployeeService {
     }
 
     public List<Employee> findEmployeeForService(EmployeeRequestDTO employeeDTO) {
-
-        return null;
+        Collection<String> skills = new ArrayList<>();
+        for(EmployeeSkill skill :  employeeDTO.getSkills()){
+            skills.add(skill.name());
+        }
+        return employeeRepository.findEmployeeForService(employeeDTO.getSkills(), employeeDTO.getDate().getDayOfWeek());
+//        return null;
     }
 }

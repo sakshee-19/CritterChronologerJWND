@@ -7,10 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -47,9 +49,22 @@ public class EmployeeRepository {
                 .setParameter("id", empId)
                 .executeUpdate();
     }
+    private static final String UP="Select * FROM employee e where e.skills in :skills AND :day in e.daysAvailable";
 
-    public void findEmployeeForService(Set<EmployeeSkill> skillSet, LocalDate date) {
-//        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    public List<Employee> findEmployeeForService(Set<EmployeeSkill> skillSet, DayOfWeek dayOfWeek) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
+        CriteriaQuery<Employee> criteria = criteriaBuilder.createQuery(Employee.class);
+
+        Root<Employee> root = criteria.from(Employee.class);
+
+
+//        criteria.where(root.get("daysAvailable").in(dayOfWeek));
+//        criteria.where();
+        criteria.where(root
+                .join("skills", JoinType.INNER)
+                .in(skillSet));
+
+        return entityManager.createQuery(criteria).getResultList();
     }
 }
