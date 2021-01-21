@@ -11,7 +11,6 @@ import java.util.Set;
 
 @NamedQuery(
         name = "Schedule.findScheduleForCustomer",
-//        query = "Select s From Schedule s where s.id in (Select spi.schedule_id  FROM schedule_pet_ids spi join Pet p on (spi.pet_ids_id=p.id) where p.owner.id=:customerId)"
         query = "Select s FROM Schedule s inner join s.petIds pet where pet.owner.id=:customerId"
 )
 @Entity
