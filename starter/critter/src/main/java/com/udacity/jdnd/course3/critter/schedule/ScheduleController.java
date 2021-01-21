@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.schedule;
 import com.udacity.jdnd.course3.critter.entites.Employee;
 import com.udacity.jdnd.course3.critter.entites.Pet;
 import com.udacity.jdnd.course3.critter.entites.Schedule;
+import com.udacity.jdnd.course3.critter.exceptions.InvalidRequestException;
 import com.udacity.jdnd.course3.critter.services.ScheduleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class ScheduleController {
     private ScheduleService scheduleService;
 
     @PostMapping
-    public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
-        Schedule schedule = scheduleService.saveSchedule(convertToEntity(scheduleDTO));
+    public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) throws InvalidRequestException {
+        Schedule schedule = scheduleService.saveSchedule(scheduleDTO);
         return convertToDto(schedule);
     }
 
@@ -56,7 +57,6 @@ public class ScheduleController {
         return schedule;
     }
 
-
     private List<ScheduleDTO> convertToEntity(List<Schedule> scheduleList) {
         List<ScheduleDTO> scheduleDTOS = new ArrayList<>();
         for (Schedule schedule: scheduleList){
@@ -69,10 +69,15 @@ public class ScheduleController {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
         BeanUtils.copyProperties(schedule,scheduleDTO, "petIds", "employeeIds");
         List<Long> petIds = new ArrayList<>();
-        for(Pet pet: schedule.getPetIds()) petIds.add(pet.getId());
+        if(schedule.getPetIds() != null)
+        {
+            for(Pet pet: schedule.getPetIds()) petIds.add(pet.getId());
+        }
 
         List<Long> employeeIds = new ArrayList<>();
-        for(Employee employee: schedule.getEmployeeIds()) employeeIds.add(employee.getId());
+        if(null != schedule.getEmployeeIds()){
+            for(Employee employee: schedule.getEmployeeIds()) employeeIds.add(employee.getId());
+        }
 
         scheduleDTO.setEmployeeIds(employeeIds);
         scheduleDTO.setPetIds(petIds);

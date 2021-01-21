@@ -1,9 +1,9 @@
 package com.udacity.jdnd.course3.critter.services;
 
 import com.udacity.jdnd.course3.critter.entites.Employee;
+import com.udacity.jdnd.course3.critter.exceptions.NotFoundException;
 import com.udacity.jdnd.course3.critter.repositories.EmployeeRepository;
 import com.udacity.jdnd.course3.critter.user.EmployeeRequestDTO;
-import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,29 +34,31 @@ public class EmployeeService {
         return employeeRepository.findById(id);
     }
 
-    public void removeEmployee(Long id){
+    public void removeEmployee(Long id) {
         logger.info("**START** delete employee id={}", id);
         employeeRepository.delete(id);
     }
 
-    public Employee updateEmployee(Employee employee, Long id){
+    public Employee updateEmployee(Employee employee, Long id) {
         logger.info("**START** updateEmployee id={}", id);
         Employee existingEmp = findEmployeeById(id);
         employee.setId(id);
-        if(existingEmp != null)
+        if (existingEmp != null)
             return employeeRepository.merge(employee);
         logger.info("**END** employee id={} does not exist", id);
-        return null;
+        throw new NotFoundException("employee with id "+id+" Not found");
     }
 
-    public void setAvailability(Set<DayOfWeek> avail, Long empId){
+    public void setAvailability(Set<DayOfWeek> avail, Long empId) {
         logger.info("**START** setAvailability avail={}, empId={}", avail, empId);
         Employee emp = findEmployeeById(empId);
-        if(emp != null) {
+        if (emp != null) {
             emp.setDaysAvailable(avail);
             employeeRepository.merge(emp);
-        } else
+        } else {
             logger.info("**END** emp with id={} does not exists", empId);
+            throw new NotFoundException("Employee with id " + empId + " Not found");
+        }
 //        employeeRepository.setUpdateAvailability(avail, empId);
     }
 

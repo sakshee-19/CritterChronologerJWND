@@ -10,12 +10,11 @@ import java.time.LocalDate;
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Enumerated(EnumType.STRING)
     private PetType type;
     private String name;
-
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,17 +23,11 @@ public class Pet {
     private LocalDate birthDate;
     private String notes;
 
-
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "appointment")
-    private Schedule appointment;
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -75,15 +68,6 @@ public class Pet {
     public void setNotes(String notes) {
         this.notes = notes;
     }
-
-    public Schedule getAppointment() {
-        return appointment;
-    }
-
-    public void setAppointment(Schedule appointment) {
-        this.appointment = appointment;
-    }
-
 //    @Override
 //    public String toString() {
 //        return "Pet{" +

@@ -29,38 +29,34 @@ public class PetController {
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
 //        throw new UnsupportedOperationException();
-        Long petId = petServices.save(convertPetDTOToPet(petDTO));
-//        Pet pet =
-                return petServices.findPetById(petId);
-//        return convertPetsToPetDTO(pet);
+        Pet pet = petServices.save(convertPetDTOToPet(petDTO));
+        return convertPetsToPetDTO(pet);
     }
 
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
-//        Pet pet =
-        return petServices.findPetById(petId);
-//        return convertPetsToPetDTO(pet);
+        Pet pet = petServices.findPetById(petId);
+        return convertPetsToPetDTO(pet);
     }
 
     @GetMapping
     public List<PetDTO> getPets(){
-//        List<Pet> petList =
-          return petServices.findAllPets();
-//        return convertPetToPetDTOList(petList);
+        List<Pet> petList = petServices.findAllPets();
+        return convertPetToPetDTOList(petList);
     }
 
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
-//        List<Pet> petList =
-                return petServices.petsByOwnerId(ownerId);
-//        return convertPetToPetDTOList(petList);
+        List<Pet> petList = petServices.petsByOwnerId(ownerId);
+        return convertPetToPetDTOList(petList);
     }
 
     private PetDTO convertPetsToPetDTO(Pet pet){
         if(pet == null)
             return null;
         PetDTO petDTO = new PetDTO();
-        BeanUtils.copyProperties(pet, petDTO);
+        BeanUtils.copyProperties(pet, petDTO, "owner");
+        petDTO.setOwnerId(pet.getOwner().getId());
         return petDTO;
     }
 
