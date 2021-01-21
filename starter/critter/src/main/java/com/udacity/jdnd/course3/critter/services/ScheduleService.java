@@ -7,6 +7,7 @@ import com.udacity.jdnd.course3.critter.exceptions.InvalidRequestException;
 import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.repositories.*;
 import com.udacity.jdnd.course3.critter.schedule.ScheduleDTO;
+import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -15,9 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ScheduleService {
@@ -38,22 +37,32 @@ public class ScheduleService {
         DayOfWeek day = findDayOfWeek(scheduleDTO.getDate());
         Schedule schedule = convertToEntity(scheduleDTO);
         System.out.println(schedule);
-        List<Employee> employeeList = new ArrayList<>();
-        for (long p : scheduleDTO.getEmployeeIds()) {
-            Employee emp = employeeRepository.findById(p);
-            employeeList.add(emp);
+        Set<EmployeeSkill> employeeSkillSet = new HashSet<>();
+        for (Employee emp : schedule.getEmployeeIds()) {
+            employeeSkillSet.addAll(emp.getSkills());
             if (!emp.getDaysAvailable().contains(day)) {
                 logger.info("Can not Schedule the appointment for employee {}, not available on day {}", emp.getId(), day);
                 throw new InvalidRequestException("Can not Schedule the appointment for employee " + emp.getId() + ", not available on day " + day);
             }
         }
+        System.out.println(employeeSkillSet);
+        System.out.println(schedule.getActivities());
+        if(!employeeSkillSet.containsAll(schedule.getActivities()))
+        {
+            logger.info("Employees does not have the skill set , given in activities");
+            throw new InvalidRequestException("Employees does not have the skill set , given in activities. Please choose proper activities");
+        }
         Schedule scheduleSaved = scheduleRepository.save(schedule);
         return scheduleSaved;
     }
 
+//    private Boolean validateActivities(List<Employee>)
+
     private Schedule convertToEntity(ScheduleDTO scheduleDTO) {
         Schedule schedule = new Schedule();
+        System.out.println(scheduleDTO.getActivities());
         BeanUtils.copyProperties(scheduleDTO, schedule, "employeeIds", "petIds");
+        System.out.println(schedule.getActivities());
         List<Employee> employeeList = new ArrayList<>();
         for (long id : scheduleDTO.getEmployeeIds()) {
             employeeList.add(employeeRepository.findById(id));
@@ -91,7 +100,6 @@ public class ScheduleService {
 
     public List<Schedule> findScheduleByCustomerId(long customerId) {
         logger.info("**START** findScheduleByCustomerId customerId={}", customerId);
-//        return scheduleRepository.findScheduleForCustomer(customerId);
-        return null;
+        return scheduleRepository.findScheduleForCustomer(customerId);
     }
 }
