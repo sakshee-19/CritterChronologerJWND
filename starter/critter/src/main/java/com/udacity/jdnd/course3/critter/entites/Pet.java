@@ -16,7 +16,6 @@ public class Pet {
     private PetType type;
     private String name;
 
-
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner")

@@ -7,20 +7,20 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-@NamedQuery(
-        name = "Schedule.findScheduleForCustomer",
-        query = "Select s From Schedule s JOIN Pet p on (s.id=p.appointment) where p.owner.id=:customerId"
-)
+//@NamedQuery(
+//        name = "Schedule.findScheduleForCustomer",
+//        query = "Select s From Schedule s JOIN Pet p on (s.id=p.appointment) where p.owner.id=:customerId"
+//)
 @Entity
 public class Schedule {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Employee.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Employee> employeeIds;
 
-    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Pet.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pet> petIds;
 
     private LocalDate date;

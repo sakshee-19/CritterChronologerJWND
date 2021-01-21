@@ -5,10 +5,7 @@ import com.udacity.jdnd.course3.critter.entites.Pet;
 import com.udacity.jdnd.course3.critter.entites.Schedule;
 import com.udacity.jdnd.course3.critter.exceptions.InvalidRequestException;
 import com.udacity.jdnd.course3.critter.pet.PetDTO;
-import com.udacity.jdnd.course3.critter.repositories.EmployeeRepository;
-import com.udacity.jdnd.course3.critter.repositories.PetDao;
-import com.udacity.jdnd.course3.critter.repositories.PetDaoImpl;
-import com.udacity.jdnd.course3.critter.repositories.ScheduleRepository;
+import com.udacity.jdnd.course3.critter.repositories.*;
 import com.udacity.jdnd.course3.critter.schedule.ScheduleDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +29,7 @@ public class ScheduleService {
     EmployeeRepository employeeRepository;
 
     @Autowired
-    PetDaoImpl petDao;
+    PetServices petServices;
 
     private static Logger logger = LoggerFactory.getLogger(ScheduleService.class);
 
@@ -51,14 +48,6 @@ public class ScheduleService {
             }
         }
         Schedule scheduleSaved = scheduleRepository.save(schedule);
-
-        for (Employee emp : employeeList) {
-            emp.setSchedule(scheduleSaved);
-            employeeRepository.persist(emp);
-        }
-        for (long petId : scheduleDTO.getPetIds()) {
-            petDao.setPetAppointmentUpdate(petId, schedule.getId());
-        }
         return scheduleSaved;
     }
 
@@ -71,12 +60,11 @@ public class ScheduleService {
         }
         List<Pet> petList = new ArrayList<>();
         for (long petId : scheduleDTO.getPetIds()) {
-            Pet pet = new Pet();
-            pet.setId(petId);
+            Pet pet = petServices.findPetById(petId);
             petList.add(pet);
         }
-//        schedule.setPetIds(petList);
-//        schedule.setEmployeeIds(employeeList);
+        schedule.setPetIds(petList);
+        schedule.setEmployeeIds(employeeList);
         return schedule;
     }
 
@@ -103,6 +91,7 @@ public class ScheduleService {
 
     public List<Schedule> findScheduleByCustomerId(long customerId) {
         logger.info("**START** findScheduleByCustomerId customerId={}", customerId);
-        return scheduleRepository.findScheduleForCustomer(customerId);
+//        return scheduleRepository.findScheduleForCustomer(customerId);
+        return null;
     }
 }

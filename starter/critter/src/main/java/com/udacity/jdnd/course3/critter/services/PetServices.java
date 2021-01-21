@@ -44,7 +44,7 @@ public class PetServices {
         if(petOptional.isPresent()){
             return petOptional.get();
         }
-        throw new NotFoundException("Pet Not found");
+        throw new NotFoundException("Pet with id"+id+" Not found");
     }
 
     public Pet save(Pet pet){

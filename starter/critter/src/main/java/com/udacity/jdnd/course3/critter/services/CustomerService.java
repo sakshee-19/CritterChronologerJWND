@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.services;
 
 import com.udacity.jdnd.course3.critter.entites.Customer;
 import com.udacity.jdnd.course3.critter.entites.Pet;
+import com.udacity.jdnd.course3.critter.exceptions.NotFoundException;
 import com.udacity.jdnd.course3.critter.repositories.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class CustomerService {
         if(cust.isPresent()){
             return cust.get();
         }
-        return null;
+        throw new NotFoundException("Customer with id "+id+" Not found");
     }
 
     public Customer getOwnerByPetId(Long petId) {

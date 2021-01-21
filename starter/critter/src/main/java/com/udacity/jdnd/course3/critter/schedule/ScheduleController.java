@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.schedule;
 import com.udacity.jdnd.course3.critter.entites.Employee;
 import com.udacity.jdnd.course3.critter.entites.Pet;
 import com.udacity.jdnd.course3.critter.entites.Schedule;
+import com.udacity.jdnd.course3.critter.exceptions.InvalidRequestException;
 import com.udacity.jdnd.course3.critter.services.ScheduleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class ScheduleController {
     private ScheduleService scheduleService;
 
     @PostMapping
-    public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
+    public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) throws InvalidRequestException {
         Schedule schedule = scheduleService.saveSchedule(scheduleDTO);
         return convertToDto(schedule);
     }
@@ -55,7 +56,6 @@ public class ScheduleController {
         BeanUtils.copyProperties(scheduleDTO, schedule);
         return schedule;
     }
-
 
     private List<ScheduleDTO> convertToEntity(List<Schedule> scheduleList) {
         List<ScheduleDTO> scheduleDTOS = new ArrayList<>();

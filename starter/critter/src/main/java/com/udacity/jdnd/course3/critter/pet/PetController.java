@@ -55,7 +55,8 @@ public class PetController {
         if(pet == null)
             return null;
         PetDTO petDTO = new PetDTO();
-        BeanUtils.copyProperties(pet, petDTO);
+        BeanUtils.copyProperties(pet, petDTO, "owner");
+        petDTO.setOwnerId(pet.getOwner().getId());
         return petDTO;
     }
 
