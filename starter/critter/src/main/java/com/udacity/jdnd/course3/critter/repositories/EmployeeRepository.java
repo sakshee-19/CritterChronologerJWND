@@ -49,7 +49,8 @@ public class EmployeeRepository {
                 .setParameter("id", empId)
                 .executeUpdate();
     }
-    private static final String UP="Select * FROM employee e where e.skills in :skills AND :day in e.daysAvailable";
+
+    private static final String UP = "Select * FROM employee e where e.skills in :skills AND :day in e.daysAvailable";
 
     public List<Employee> findEmployeeForService(Set<EmployeeSkill> skillSet, DayOfWeek dayOfWeek) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -61,9 +62,9 @@ public class EmployeeRepository {
 
 //        criteria.where(root.get("daysAvailable").in(dayOfWeek));
 //        criteria.where();
-        criteria.where(root
+        criteria.distinct(true).where(criteriaBuilder.and(root
                 .join("skills", JoinType.INNER)
-                .in(skillSet));
+                .in(skillSet), root.join("daysAvailable", JoinType.INNER).in(dayOfWeek)));
 
         return entityManager.createQuery(criteria).getResultList();
     }

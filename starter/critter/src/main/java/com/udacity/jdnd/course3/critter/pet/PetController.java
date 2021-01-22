@@ -56,7 +56,8 @@ public class PetController {
             return null;
         PetDTO petDTO = new PetDTO();
         BeanUtils.copyProperties(pet, petDTO, "owner");
-        petDTO.setOwnerId(pet.getOwner().getId());
+        if(pet.getOwner() !=null)
+            petDTO.setOwnerId(pet.getOwner().getId());
         return petDTO;
     }
 
@@ -71,7 +72,8 @@ public class PetController {
     private Pet convertPetDTOToPet(PetDTO petDto){
         Pet pet = new Pet();
         BeanUtils.copyProperties(petDto, pet);
-        pet.setOwner(customerService.getCustomerById(petDto.getOwnerId()));
+        if(petDto.getOwnerId() != 0)
+            pet.setOwner(customerService.getCustomerById(petDto.getOwnerId()));
         return pet;
     }
 }

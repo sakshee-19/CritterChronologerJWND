@@ -38,6 +38,7 @@ public class ScheduleService {
         Schedule schedule = convertToEntity(scheduleDTO);
         System.out.println(schedule);
         Set<EmployeeSkill> employeeSkillSet = new HashSet<>();
+        System.out.println(schedule.getEmployeeIds());
         for (Employee emp : schedule.getEmployeeIds()) {
             employeeSkillSet.addAll(emp.getSkills());
             if (!emp.getDaysAvailable().contains(day)) {
@@ -45,13 +46,11 @@ public class ScheduleService {
                 throw new InvalidRequestException("Can not Schedule the appointment for employee " + emp.getId() + ", not available on day " + day);
             }
         }
-        System.out.println(employeeSkillSet);
-        System.out.println(schedule.getActivities());
-        if(!employeeSkillSet.containsAll(schedule.getActivities()))
-        {
-            logger.info("Employees does not have the skill set , given in activities");
-            throw new InvalidRequestException("Employees does not have the skill set , given in activities. Please choose proper activities");
-        }
+//        if(!employeeSkillSet.containsAll(schedule.getActivities()))
+//        {
+//            logger.info("Employees does not have the skill set , given in activities");
+//            throw new InvalidRequestException("Employees does not have the skill set , given in activities. Please choose proper activities");
+//        }
         Schedule scheduleSaved = scheduleRepository.save(schedule);
         return scheduleSaved;
     }

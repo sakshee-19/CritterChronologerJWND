@@ -44,6 +44,7 @@ public class UserController {
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
         Customer customer = customerService.getOwnerByPetId(petId);
+        System.out.println(customer);
         if (customer != null)
             return convertToDTOCustomer(customer);
         return null;
@@ -51,6 +52,7 @@ public class UserController {
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        System.out.println(employeeDTO);
         Employee employee = employeeService.saveEmployee(convertToEntity(employeeDTO));
         return convertToDTOEmployee(employee);
     }
@@ -69,6 +71,7 @@ public class UserController {
 
     @GetMapping("/employee/availability")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
+        System.out.println(employeeDTO);
         List<Employee> employee = employeeService.findEmployeeForService(employeeDTO);
         return convertToDTOEmployee(employee);
     }
@@ -89,8 +92,10 @@ public class UserController {
     private CustomerDTO convertToDTOCustomer(Customer customer) {
         CustomerDTO customerDTO = new CustomerDTO();
         List<Pet> pets = customer.getPetIds();
+        System.out.println(pets);
         BeanUtils.copyProperties(customer, customerDTO, "petIds");
         if (pets != null && !pets.isEmpty()){
+            System.out.println("petIds not null");
                 for(Pet pet : pets){
                 customerDTO.addPetIds(pet.getId());
             }

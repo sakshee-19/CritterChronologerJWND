@@ -43,9 +43,10 @@ public class CustomerService {
 
     public Customer getOwnerByPetId(Long petId) {
         logger.info("**START getOwnerByPetId petId={}", petId);
-        Customer customer = customerRepository.getByPetId(petId);
+//        Customer customer = customerRepository.getByPetId(petId);
+        Customer customer = customerRepository.getByPetIds_Id(petId);
 //        if (customer.isPresent()) return customer.get();
-        logger.info("**END getOwnerByPetId petId={}", petId);
+        logger.info("**END getOwnerByPetId petId={} customer={}", petId, customer);
         return customer;
     }
 

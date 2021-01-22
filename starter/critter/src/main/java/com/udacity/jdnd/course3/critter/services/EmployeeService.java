@@ -66,11 +66,17 @@ public class EmployeeService {
     }
 
     public List<Employee> findEmployeeForService(EmployeeRequestDTO employeeDTO) {
-        Collection<String> skills = new ArrayList<>();
-        for(EmployeeSkill skill :  employeeDTO.getSkills()){
-            skills.add(skill.name());
+        logger.info("**START** findEmployeeForService");
+        List<Employee> employeeList = employeeRepository.findEmployeeForService(employeeDTO.getSkills(), employeeDTO.getDate().getDayOfWeek());
+        List<Employee> filter = new ArrayList<>();
+        for(Employee employee : employeeList){
+            System.out.println(employee.getSkills());
+            if(employee.getSkills().containsAll(employeeDTO.getSkills())){
+                filter.add(employee);
+            }
         }
-        return employeeRepository.findEmployeeForService(employeeDTO.getSkills(), employeeDTO.getDate().getDayOfWeek());
-//        return null;
+        System.out.println(filter);
+        logger.info("**END** findEmployeeForService");
+        return filter;
     }
 }

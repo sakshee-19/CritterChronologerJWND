@@ -26,4 +26,12 @@ public class EmployeeRequestDTO {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "EmployeeRequestDTO{" +
+                "skills=" + skills +
+                ", date=" + date +
+                '}';
+    }
 }
