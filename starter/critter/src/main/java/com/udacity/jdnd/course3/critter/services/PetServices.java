@@ -50,6 +50,8 @@ public class PetServices {
     public Pet save(Pet pet){
         logger.info("**START** save() ={}", pet);
 //        return petDao.savePet(pet, ownerId);
+        Pet savedPet = petRepository.save(pet);
+//        pet.getOwner().
         return petRepository.save(pet);
     }
 }
